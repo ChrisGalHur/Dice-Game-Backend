@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Class to manage the data of player.
+ * Manage the data of player and her history out of database.
  *
  * @version 1.0
  * @since 2024-01-29
@@ -19,21 +19,16 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "Player")
 public class PlayerDTO {
 
     @Id
     private String id;
 
-    @Field(name = "name")
     private String name;
 
-    @Field(name = "registration")
     private Date registration;
 
-    @Field(name = "role")
     private List<Role> role;
 
-    @Field(name = "history")
     private List<DataPlayerEntity> dataPlayer;
 }

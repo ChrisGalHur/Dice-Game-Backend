@@ -10,7 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.List;
 
 /**
- * Manage a player session in the database.
+ * Manages the player session in the database.
+ * Only to store the name, password and roles are stored.
  *
  * @version 1.0
  * @since 2024-01-29

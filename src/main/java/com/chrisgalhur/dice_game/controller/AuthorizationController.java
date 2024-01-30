@@ -5,6 +5,7 @@ import com.chrisgalhur.dice_game.model.SessionPlayerDTO;
 import com.chrisgalhur.dice_game.service.PlayerServiceImpl;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,12 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ChrisGalHur
  */
 @RestController
-@RequestMapping("/api/player")
-@RequiredArgsConstructor
+@RequestMapping("/api/auth")
 public class AuthorizationController {
 
+    //region INJECTIONS
+    @Autowired
     private PlayerServiceImpl playerServiceimpl;
+    //endregion INJECTIONS
 
+    //region ENDPOINT REGISTER
     /**
      * Registers a new player using a POST request.
      * Validates the player information to ensure it is not null and meets specific conditions.
@@ -63,4 +67,5 @@ public class AuthorizationController {
         SessionPlayerDTO playerRegistered = playerServiceimpl.registerNewUser(playerDTO);
         return new ResponseEntity<>("User registered with name: " + playerRegistered.getName(), HttpStatus.CREATED);
     }
+    //endregion ENDPOINT REGISTER
 }
