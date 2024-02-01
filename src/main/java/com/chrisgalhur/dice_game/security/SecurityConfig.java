@@ -1,6 +1,7 @@
 package com.chrisgalhur.dice_game.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -57,7 +58,7 @@ public class SecurityConfig{
                 .exceptionHandling(e -> e
                         .authenticationEntryPoint(jwtAuthEntryPoint))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**")
+                        .requestMatchers(SecurityConstants.AUTHORIZED_URL + "/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
@@ -65,7 +66,6 @@ public class SecurityConfig{
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults());
 
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

@@ -1,9 +1,12 @@
 package com.chrisgalhur.dice_game.security;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+
+import java.security.Key;
 import java.util.Date;
 
 /**
@@ -15,6 +18,12 @@ import java.util.Date;
  */
 @Component
 public class JWTGenerator {
+
+    private final Key key;
+
+    public JWTGenerator(){
+        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    }
 
     /**
      * Generates a JWT token from an authentication object.
@@ -36,7 +45,7 @@ public class JWTGenerator {
                     .setSubject(username)
                     .setIssuedAt(new Date())
                     .setExpiration(expirationDate)
-                    .signWith(SignatureAlgorithm.HS256, SecurityConstants.JWT_SECRET)
+                    .signWith(key, SignatureAlgorithm.HS256)
                     .compact();
         }catch (ExpiredJwtException | MalformedJwtException ex){
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect.");
@@ -54,7 +63,7 @@ public class JWTGenerator {
      */
     public String getUserNameFromJWT(String token){
         Claims claims = Jwts.parser()
-                .setSigningKey(SecurityConstants.JWT_SECRET)
+                .setSigningKey(key)
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
@@ -69,7 +78,7 @@ public class JWTGenerator {
      */
     public boolean validateToken(String token){
         try{
-            Jwts.parser().setSigningKey(SecurityConstants.JWT_SECRET).parseClaimsJws(token).getBody();
+            Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
             return true;
         }catch (Exception ex){
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect.");
