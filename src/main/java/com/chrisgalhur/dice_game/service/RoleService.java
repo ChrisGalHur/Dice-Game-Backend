@@ -8,10 +8,18 @@ import java.util.Optional;
  * Interface to manage the role service.
  *
  * @version 1.0
- * @since 2024-01-30
  * @author ChrisGalHur
  */
+
 public interface RoleService {
 
+    //region FIND BY NAME
+    /**
+     * Method to find a role by name.
+     *
+     * @param user Name of the role.
+     * @return The role.
+     */
     Optional<Role> findByName(String user);
+    //endregion FIND BY NAME
 }

@@ -8,15 +8,21 @@ import java.util.Optional;
 /**
  * Manage the role repository on the database.
  *
- *
  * @see com.chrisgalhur.dice_game.model.Role
  * @version 1.0
- * @since 2024-01-30
  * @author ChrisGalHur
  */
+
 @Repository
 public interface RoleRepository extends MongoRepository<Role, String> {
 
-
+    //region FIND BY NAME
+    /**
+     * Find a role by his name.
+     *
+     * @param user Name of the role to find.
+     * @return Role found or empty.
+     */
     Optional<Role> findByName(String user);
+    //endregion FIND BY NAME
 }

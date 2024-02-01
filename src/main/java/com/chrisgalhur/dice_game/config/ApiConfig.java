@@ -14,19 +14,23 @@ import org.springframework.context.annotation.Configuration;
  * </p>
  *
  * @version 1.0
- * @since 2024-01-30
  * @author ChrisGalHur
  */
+
 @Configuration
 public class ApiConfig {
+
+    //region MODEL MAPPER
 
     /**
      * Creates and configures a {@link org.modelmapper.ModelMapper} bean.
      *
      * @return Configured ModelMapper bean.
      */
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+    //endregion MODEL MAPPER
 }

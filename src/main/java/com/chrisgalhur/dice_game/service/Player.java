@@ -19,16 +19,18 @@ import java.util.List;
  *
  * @see com.chrisgalhur.dice_game.model.SessionPlayerDTO DTO of this class.
  * @see com.chrisgalhur.dice_game.model.SessionPlayer Login and registration process.
+ *
  * @version 1.0
- * @since 2024-01-30
  * @author ChrisGalHur
  */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "Player")
 public class Player {
 
+    //region ATTRIBUTES
     @Id
     private String id;
 
@@ -38,9 +40,10 @@ public class Player {
     @Field(name = "registration")
     private Date registration;
 
-    @Field(name = "role")
-    private List<Role> role;
+    @Field(name = "roles")
+    private List<Role> roles;
 
     @Field(name = "history")
     private List<DataPlayerEntity> dataPlayer;
+    //endregion ATTRIBUTES
 }

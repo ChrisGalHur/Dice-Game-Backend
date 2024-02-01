@@ -8,14 +8,14 @@ import java.util.Optional;
 /**
  * Manages the communication with the database for player related requests regarding registration and login.
  *
- * @see Optional
  * @version 1.0
- * @since 2024-01-30
  * @author ChrisGalHur
  */
+
 @Repository
 public interface SessionPlayerRepository extends MongoRepository<SessionPlayer, String> {
 
+    //region FIND BY NAME
     /**
      * Find a player by his name.
      *
@@ -23,7 +23,9 @@ public interface SessionPlayerRepository extends MongoRepository<SessionPlayer, 
      * @return Player found.
      */
     Optional<SessionPlayer> findByName(String username);
+    //endregion FIND BY NAME
 
+    //region EXISTS BY NAME
     /**
      * Check if a player exists by his name.
      *
@@ -31,12 +33,16 @@ public interface SessionPlayerRepository extends MongoRepository<SessionPlayer, 
      * @return True if the player exists, false if not.
      */
     boolean existsByName(String name);
+    //endregion EXISTS BY NAME
 
+    //region SAVE
     /**
      * Save a player in the database.
      *
      * @param player Player to save.
      * @return Player saved.
      */
+    //todo: check if this is necessary
     SessionPlayer save(SessionPlayer player);
+    //endregion SAVE
 }

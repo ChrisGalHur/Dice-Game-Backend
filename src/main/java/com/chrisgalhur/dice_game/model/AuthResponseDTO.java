@@ -6,18 +6,21 @@ import lombok.Data;
  * Class to manage the authentication response.
  *
  * @version 1.0
- * @since 2021-01-31
  * @author ChrisGalHur
  */
+
 @Data
 public class AuthResponseDTO {
 
+    //region ATTRIBUTES
     private String accessToken;
 
     private String tokenType = "Bearer ";
 
     private String message;
+    //endregion ATTRIBUTES
 
+    //region CONSTRUCTOR
     /**
      * Constructor of the class.
      *
@@ -27,4 +30,5 @@ public class AuthResponseDTO {
         this.accessToken = accessToken;
         this.message = message;
     }
+    //endregion CONSTRUCTOR
 }

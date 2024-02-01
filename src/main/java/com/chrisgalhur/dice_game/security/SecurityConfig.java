@@ -21,13 +21,15 @@ import org.springframework.stereotype.Service;
  * Configuration class for Spring Security.
  *
  * @version 1.0
- * @since 2024-01-30
  * @author ChrisGalHur
  */
+
 @Service
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig{
+public class SecurityConfig {
+
+    //region DEPENDENCY INJECTION
     @Autowired
     private JWTAuthEntryPoint jwtAuthEntryPoint;
 
@@ -38,7 +40,9 @@ public class SecurityConfig{
     public SecurityConfig(CustomUserDetailsService userDetailsService){
         this.userDetailsService = userDetailsService;
     }
+    //endregion DEPENDENCY INJECTION
 
+    //region FILTER CHAIN
     /**
      * Configures the security filter chain to handle authentication and authorize http to enter the API.
      * The authentication is managed by the {@link JWTAuthenticationFilter}.
@@ -68,7 +72,9 @@ public class SecurityConfig{
 
         return http.build();
     }
+    //endregion FILTER CHAIN
 
+    //region AUTHENTICATION MANAGER BEAN
     /**
      * Creates an authentication manager responsible for authentication.
      *
@@ -81,7 +87,9 @@ public class SecurityConfig{
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+    //endregion AUTHENTICATION MANAGER BEAN
 
+    //region PASSWORD ENCODER BEAN
     /**
      * Creates a password encoder provided by Spring Security in this case.
      *
@@ -91,7 +99,9 @@ public class SecurityConfig{
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+    //endregion PASSWORD ENCODER BEAN
 
+    //region JWT AUTHENTICATION FILTER BEAN
     /**
      * Creates a JWT authentication filter.
      *
@@ -101,4 +111,5 @@ public class SecurityConfig{
     public JWTAuthenticationFilter jwtAuthenticationFilter(){
         return new JWTAuthenticationFilter();
     }
+    //endregion JWT AUTHENTICATION FILTER BEAN
 }

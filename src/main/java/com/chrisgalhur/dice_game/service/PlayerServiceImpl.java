@@ -18,10 +18,11 @@ import java.util.Collections;
  * Implements PlayerService interface.
  *
  * @see PlayerService
+ *
  * @version 1.0
- * @since 2024-01-29
  * @author ChrisGalHur
  */
+
 @Service
 public class PlayerServiceImpl implements PlayerService{
 
@@ -31,18 +32,7 @@ public class PlayerServiceImpl implements PlayerService{
     private final SessionPlayerRepository sessionPlayerRepository;
     private final RoleServiceImpl roleService;
     private final PlayerRepository playerRepository;
-    //endregion DEPENDENCY INJECTION
 
-    //region CONSTRUCTOR
-    /**
-     * Constructor of the class.
-     *
-     * @param modelMapper ModelMapper object.
-     * @param passwordEncoder PasswordEncoder object.
-     * @param sessionPlayerRepository SessionPlayerRepository object.
-     * @param roleService RoleService object.
-     * @param playerRepository PlayerRepository object.
-     */
     @Autowired
     public PlayerServiceImpl(ModelMapper modelMapper, PasswordEncoder passwordEncoder, SessionPlayerRepository sessionPlayerRepository, RoleServiceImpl roleService, PlayerRepository playerRepository) {
         this.modelMapper = modelMapper;
@@ -51,9 +41,9 @@ public class PlayerServiceImpl implements PlayerService{
         this.roleService = roleService;
         this.playerRepository = playerRepository;
     }
-    //endregion CONSTRUCTOR
+    //endregion DEPENDENCY INJECTION
 
-    //region METHODS EXIST: BYNAME
+    //region EXIST BY NAME
     /**
      * Verifies if the player exists by name in the database.
      *
@@ -64,9 +54,9 @@ public class PlayerServiceImpl implements PlayerService{
     public boolean existsByName(String name) {
         return sessionPlayerRepository.existsByName(name);
     }
-    //endregion METHODS EXIST: BYNAME
+    //endregion METHODS EXIST BY NAME
 
-    //region METHODS: REGISTER
+    //region REGISTER
     /**
      * Registers a new player in the database.
      * Change the class of the player to PlayerEntity.
@@ -83,12 +73,12 @@ public class PlayerServiceImpl implements PlayerService{
         //Manage player
         Player player = modelMapper.map(playerDTO, Player.class);
         Role roleUser = roleService.findByName("USER").get();
-        player.setRole(Collections.singletonList(roleUser));
+        player.setRoles(Collections.singletonList(roleUser));
         playerRepository.save(player);
 
 
         SessionPlayer playerRegistered = sessionPlayerRepository.save(sessionPlayer);
         return modelMapper.map(playerRegistered, SessionPlayerDTO.class);
     }
-    //endregion METHODS: REGISTER
+    //endregion REGISTER
 }

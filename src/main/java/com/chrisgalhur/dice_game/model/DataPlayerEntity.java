@@ -10,14 +10,15 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * Manage a game by listing the dice and the result.
  *
  * @version 1.0
- * @since 2024-01-30
  * @author ChrisGalHur
  */
- @Data
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class DataPlayerEntity {
 
+    //region ATTRIBUTES
     @Id
     @Field(name = "id")
     private String id;
@@ -27,7 +28,9 @@ public class DataPlayerEntity {
     private int numDice2;
     @Field(name = "result")
     private String result;
+    //endregion ATTRIBUTES
 
+    //region CONSTRUCTOR
     /**
      * Constructor of DataPlayerEntity to register a new game.
      *
@@ -40,4 +43,5 @@ public class DataPlayerEntity {
         this.numDice2 = numDice2;
         this.result = result;
     }
+    //endregion CONSTRUCTOR
 }

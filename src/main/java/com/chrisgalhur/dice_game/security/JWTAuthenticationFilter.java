@@ -17,17 +17,20 @@ import java.io.IOException;
  * Handles JWT-based authentication.
  *
  * @version 1.0
- * @since 2021-01-30
  * @author ChrisGalHur
  */
+
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
+    //region DEPENDENCY INJECTION
     @Autowired
     private JWTGenerator tokenGenerator;
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+    //endregion DEPENDENCY INJECTION
 
+    //region DO FILTER INTERNAL
     /**
      * Filters the request and validates the token JWT.
      *
@@ -55,7 +58,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+    //endregion DO FILTER INTERNAL
 
+    //region GET JWT FROM REQUEST
     /**
      * Extract the JWT token from the request.
      *
@@ -70,4 +75,5 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
         return null;
     }
+    //endregion GET JWT FROM REQUEST
 }

@@ -6,11 +6,12 @@ import com.chrisgalhur.dice_game.model.SessionPlayerDTO;
  * Interface to manage the player service.
  *
  * @version 1.0
- * @since 2024-01-29
  * @author ChrisGalHur
  */
+
 public interface PlayerService {
 
+    //region EXISTS BY NAME
     /**
      * Method to verify if the player exists by name in the database.
      *
@@ -18,7 +19,9 @@ public interface PlayerService {
      * @return True if the player exists in the database, false if not.
      */
     boolean existsByName(String name);
+    //endregion EXISTS BY NAME
 
+    //region REGISTER NEW USER
     /**
      * Method to register a new player in the database.
      *
@@ -26,4 +29,5 @@ public interface PlayerService {
      * @return
      */
     SessionPlayerDTO registerNewUser(SessionPlayerDTO playerDTO);
+    //endregion REGISTER NEW USER
 }

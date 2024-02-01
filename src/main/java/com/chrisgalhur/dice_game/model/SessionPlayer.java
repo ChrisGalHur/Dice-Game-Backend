@@ -14,15 +14,16 @@ import java.util.List;
  * Only to store the name, password and roles are stored.
  *
  * @version 1.0
- * @since 2024-01-29
  * @author ChrisGalHur
  */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "Player_session")
 public class SessionPlayer {
 
+    //region ATTRIBUTES
     @Id
     private String id;
 
@@ -34,4 +35,5 @@ public class SessionPlayer {
 
     @Field(name = "roles")
     private List<Role> roles;
+    //endregion ATTRIBUTES
 }

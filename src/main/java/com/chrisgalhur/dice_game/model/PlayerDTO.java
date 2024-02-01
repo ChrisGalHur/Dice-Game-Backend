@@ -13,14 +13,15 @@ import java.util.List;
  * Manage the data of player and her history out of database.
  *
  * @version 1.0
- * @since 2024-01-29
  * @author ChrisGalHur
  */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlayerDTO {
 
+    //region ATTRIBUTES
     @Id
     private String id;
 
@@ -31,4 +32,5 @@ public class PlayerDTO {
     private List<Role> role;
 
     private List<DataPlayerEntity> dataPlayer;
+    //endregion ATTRIBUTES
 }

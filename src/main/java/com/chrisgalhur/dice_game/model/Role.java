@@ -10,17 +10,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Specified a role of player can be in the game.
  *
  * @version 1.0
- * @since 2024-01-30
  * @author ChrisGalHur
  */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "Role")
 public class Role {
 
+    //region ATTRIBUTES
     @Id
     private String id;
 
     private String name;
+    //endregion ATTRIBUTES
 }

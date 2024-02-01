@@ -23,19 +23,25 @@ import org.springframework.stereotype.Component;
  * </p>
  *
  * @version 1.0
- * @since 2024-01-30
  * @author ChrisGalHur
  */
+
 @Component
 public class CustomAuthenticationManager implements AuthenticationManager {
 
-    @Autowired
-    private PlayerServiceImpl playerServiceImpl;
-    @Autowired
-    private SecurityConfig securityConfig;
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    //region DEPENDENCY INJECTION
+    private final SecurityConfig securityConfig;
 
+    private final CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    public CustomAuthenticationManager(SecurityConfig securityConfig, CustomUserDetailsService customUserDetailsService) {
+        this.securityConfig = securityConfig;
+        this.customUserDetailsService = customUserDetailsService;
+    }
+    //endregion DEPENDENCY INJECTION
+
+    //region AUTHENTICATE
     /**
      * Authenticates the user by username and password and returns an authentication token if the authentication is successful or throws an exception if the authentication fails.
      *
@@ -46,9 +52,12 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         final UserDetails userDetail = customUserDetailsService.loadUserByUsername(authentication.getName());
+
         if (!securityConfig.passwordEncoder().matches(authentication.getCredentials().toString(), userDetail.getPassword())) {
             throw new BadCredentialsException("Wrong password");
         }
+
         return new UsernamePasswordAuthenticationToken(userDetail.getUsername(), userDetail.getPassword(), userDetail.getAuthorities());
     }
+    //endregion AUTHENTICATE
 }

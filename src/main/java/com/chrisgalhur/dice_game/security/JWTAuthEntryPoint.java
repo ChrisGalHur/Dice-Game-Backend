@@ -13,12 +13,13 @@ import java.io.IOException;
  * Handles authentication entry point exception related to JWT authentication.
  *
  * @version 1.0
- * @since 2021-01-30
  * @author ChrisGalHur
  */
+
 @Component
 public class JWTAuthEntryPoint implements AuthenticationEntryPoint {
 
+    //region COMMENCE
     /**
      * Commences an authentication entry point by sending an authentication error response.
      *
@@ -32,4 +33,5 @@ public class JWTAuthEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
     }
+    //endregion COMMENCE
 }

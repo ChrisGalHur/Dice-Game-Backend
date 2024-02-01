@@ -12,22 +12,27 @@ import java.util.Optional;
  * Implements RoleService interface.
  *
  * @see RoleService
+ *
  * @version 1.0
- * @since 2024-01-30
  * @author ChrisGalHur
  */
-@Service
-public class RoleServiceImpl implements RoleService{
 
+@Service
+public class RoleServiceImpl implements RoleService {
+
+    //region DEPENDENCY INJECTION
     private final RoleRepository roleRepository;
 
     @Autowired
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
+    //endregion DEPENDENCY INJECTION
 
+    //region FIND BY NAME
     @Override
     public Optional<Role> findByName(String user) {
         return roleRepository.findByName(user);
     }
+    //endregion FIND BY NAME
 }
