@@ -24,6 +24,10 @@ public class JWTGenerator {
     //endregion ATTRIBUTES
 
     //region CONSTRUCTOR
+    /**
+     * Constructor of the class.
+     * Assigns a secret key to the key attribute for JWT generation and validation.
+     */
     public JWTGenerator(){
         this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }

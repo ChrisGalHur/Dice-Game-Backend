@@ -9,9 +9,12 @@ import com.chrisgalhur.dice_game.model.SessionPlayerDTO;
  * @author ChrisGalHur
  */
 
-public interface PlayerService {
+public interface SessionPlayerService {
 
     //region EXISTS BY NAME
+
+    SessionPlayerDTO loginUser(SessionPlayerDTO sessionPlayerDTO);
+
     /**
      * Method to verify if the player exists by name in the database.
      *
@@ -26,7 +29,7 @@ public interface PlayerService {
      * Method to register a new player in the database.
      *
      * @param playerDTO Player to register.
-     * @return
+     * @return SessionPlayerDTO with the player information.
      */
     SessionPlayerDTO registerNewUser(SessionPlayerDTO playerDTO);
     //endregion REGISTER NEW USER

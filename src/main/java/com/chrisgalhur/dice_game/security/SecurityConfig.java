@@ -30,15 +30,19 @@ import org.springframework.stereotype.Service;
 public class SecurityConfig {
 
     //region DEPENDENCY INJECTION
-    @Autowired
-    private JWTAuthEntryPoint jwtAuthEntryPoint;
+    private final JWTAuthEntryPoint jwtAuthEntryPoint;
+    private final CustomUserDetailsService userDetailsService;
 
+    /**
+     * Dependency injection of the custom user details service.
+     *
+     * @param userDetailsService Custom user details service.
+     * @param jwtAuthEntryPoint JWT authentication entry point.
+     */
     @Autowired
-    private CustomUserDetailsService userDetailsService;
-
-    @Autowired
-    public SecurityConfig(CustomUserDetailsService userDetailsService){
+    public SecurityConfig(CustomUserDetailsService userDetailsService, JWTAuthEntryPoint jwtAuthEntryPoint){
         this.userDetailsService = userDetailsService;
+        this.jwtAuthEntryPoint = jwtAuthEntryPoint;
     }
     //endregion DEPENDENCY INJECTION
 

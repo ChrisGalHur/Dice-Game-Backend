@@ -1,6 +1,7 @@
 package com.chrisgalhur.dice_game.model;
 
 import lombok.Data;
+import lombok.Setter;
 
 /**
  * Class to manage the authentication response.
@@ -25,6 +26,7 @@ public class AuthResponseDTO {
      * Constructor of the class.
      *
      * @param accessToken The access token.
+     * @param message The message.
      */
     public AuthResponseDTO(String accessToken, String message) {
         this.accessToken = accessToken;

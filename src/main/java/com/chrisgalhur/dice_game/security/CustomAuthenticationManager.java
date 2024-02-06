@@ -1,6 +1,5 @@
 package com.chrisgalhur.dice_game.security;
 
-import com.chrisgalhur.dice_game.service.PlayerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,6 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import java.util.logging.Logger;
 
 /**
  * CustomAuthenticationManager is responsible for authenticating users by username and password.
@@ -34,6 +35,12 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
     private final CustomUserDetailsService customUserDetailsService;
 
+    /**
+     * Implements classes that are required for the authentication process.
+     *
+     * @param securityConfig Security configuration for managing the authentication process.
+     * @param customUserDetailsService Custom user details service for retrieving user details during the authentication process.
+     */
     @Autowired
     public CustomAuthenticationManager(SecurityConfig securityConfig, CustomUserDetailsService customUserDetailsService) {
         this.securityConfig = securityConfig;
@@ -53,7 +60,16 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         final UserDetails userDetail = customUserDetailsService.loadUserByUsername(authentication.getName());
 
-        if (!securityConfig.passwordEncoder().matches(authentication.getCredentials().toString(), userDetail.getPassword())) {
+        if (userDetail == null) {
+            throw new BadCredentialsException("Username not found");
+        }
+
+        //todo : pruebas
+        String enteredPass = (String) authentication.getCredentials();
+        Logger.getLogger("CustomAuthenticationManager").info("Entered pass: " + enteredPass);
+        Logger.getLogger("CustomAuthenticationManager").info("Stored pass: " + userDetail.getPassword());
+
+        if (!securityConfig.passwordEncoder().matches(enteredPass, userDetail.getPassword())) {
             throw new BadCredentialsException("Wrong password");
         }
 

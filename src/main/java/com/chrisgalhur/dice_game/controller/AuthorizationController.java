@@ -1,11 +1,11 @@
 package com.chrisgalhur.dice_game.controller;
 
+import com.chrisgalhur.dice_game.exception.InvalidCredentialsException;
 import com.chrisgalhur.dice_game.model.AuthResponseDTO;
 import com.chrisgalhur.dice_game.model.SessionPlayerDTO;
 import com.chrisgalhur.dice_game.security.CustomAuthenticationManager;
 import com.chrisgalhur.dice_game.security.JWTGenerator;
-import com.chrisgalhur.dice_game.service.PlayerServiceImpl;
-import io.micrometer.common.util.StringUtils;
+import com.chrisgalhur.dice_game.service.AuthorizationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,22 +32,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthorizationController {
 
     //region INJECTIONS
-    private final PlayerServiceImpl playerServiceimpl;
     private final CustomAuthenticationManager customAuthenticationManager;
     private final JWTGenerator jwtGenerator;
+    private final AuthorizationServiceImpl authorizationService;
 
     /**
-     * Constructor of the class.
+     * Constructor of the class.0
      *
-     * @param playerServiceimpl Player service implementation.
      * @param customAuthenticationManager Custom authentication manager.
      * @param jwtGenerator JWT generator.
-     */
+     * @param authorizationService Authorization service implementation.
+     *  */
     @Autowired
-    public AuthorizationController(PlayerServiceImpl playerServiceimpl, CustomAuthenticationManager customAuthenticationManager, JWTGenerator jwtGenerator) {
-        this.playerServiceimpl = playerServiceimpl;
+    public AuthorizationController(CustomAuthenticationManager customAuthenticationManager, JWTGenerator jwtGenerator, AuthorizationServiceImpl authorizationService) {
         this.customAuthenticationManager = customAuthenticationManager;
         this.jwtGenerator = jwtGenerator;
+        this.authorizationService = authorizationService;
     }
     //endregion INJECTIONS
 
@@ -64,36 +64,34 @@ public class AuthorizationController {
      *  */
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDTO> register(@RequestBody SessionPlayerDTO sessionPlayerDTO) {
-
-        //validate if PlayerDTO is null
-        if (sessionPlayerDTO == null) {
-            return ResponseEntity.badRequest().body(new AuthResponseDTO(null, "Invalid request body"));
+        try{
+            AuthResponseDTO response = authorizationService.authenticateRegisterPlayer(sessionPlayerDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        }catch (InvalidCredentialsException e){
+            return ResponseEntity.badRequest().body(new AuthResponseDTO(null, e.getMessage()));
         }
-
-        //validate if name of user is null or empty
-        if (StringUtils.isEmpty(sessionPlayerDTO.getName())) {
-            sessionPlayerDTO.setName("UNKNOWN");
-            SessionPlayerDTO playerRegistered = playerServiceimpl.registerNewUser(sessionPlayerDTO);
-
-            Authentication authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(playerRegistered.getName(), playerRegistered.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String token = jwtGenerator.generateToken(authentication);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponseDTO(token, "User registered with default name: " + playerRegistered.getName()));
-        }
-
-        //validate if user already exists
-        if (playerServiceimpl.existsByName(sessionPlayerDTO.getName())) {
-            return ResponseEntity.badRequest().body(new AuthResponseDTO(null, "User by name " + sessionPlayerDTO.getName() + " already exists.\n" +
-                    "Please select another name."));
-        }
-
-        //save user and return response with token
-        SessionPlayerDTO playerRegistered = playerServiceimpl.registerNewUser(sessionPlayerDTO);
-
-        Authentication authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(playerRegistered.getName(), playerRegistered.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtGenerator.generateToken(authentication);
-        return ResponseEntity.badRequest().body(new AuthResponseDTO(token, "User registered with name: " + playerRegistered.getName()));
     }
     //endregion REGISTER
+
+    //region LOGIN
+    /**
+     * Logs in a player using a POST request.
+     * Validates the player information to ensure it is not null and meets specific conditions.
+     *
+     * @param sessionPlayerDTO The player to login
+     * @return ResponseEntity indicating the result of the login operation.
+     *        Possible HTTP status codes:
+     *        - 200 OK: Player logged in successfully.
+     *        - 400 Bad Request: Invalid request body or player does not exist.
+     *  */
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody SessionPlayerDTO sessionPlayerDTO) {
+        try{
+            AuthResponseDTO response = authorizationService.authenticateLoginPlayer(sessionPlayerDTO);
+            return ResponseEntity.ok().body(response);
+        }catch (InvalidCredentialsException e){
+            return ResponseEntity.badRequest().body(new AuthResponseDTO(null, e.getMessage()));
+        }
+    }
+    //endregion LOGIN
 }

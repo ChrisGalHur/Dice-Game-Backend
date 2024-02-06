@@ -14,15 +14,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "Role")
 public class Role {
 
     //region ATTRIBUTES
-    @Id
-    private String id;
-
     private String name;
     //endregion ATTRIBUTES
 }

@@ -33,6 +33,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final SessionPlayerRepository sessionPlayerRepository;
 
+    /**
+     * Injects the player repository and the session player repository to access player data from the database.
+     *
+     * @param playerRepository Player repository to access player data from the database.
+     * @param sessionPlayerRepository Session player repository to access session player data from the database.
+     */
     @Autowired
     public CustomUserDetailsService(PlayerRepository playerRepository, SessionPlayerRepository sessionPlayerRepository) {
         this.playerRepository = playerRepository;
