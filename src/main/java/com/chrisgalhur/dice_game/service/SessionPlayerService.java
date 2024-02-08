@@ -1,6 +1,6 @@
 package com.chrisgalhur.dice_game.service;
 
-import com.chrisgalhur.dice_game.model.SessionPlayerDTO;
+import com.chrisgalhur.dice_game.dto.SessionPlayerDTO;
 
 /**
  * Interface to manage the player service.
@@ -11,10 +11,17 @@ import com.chrisgalhur.dice_game.model.SessionPlayerDTO;
 
 public interface SessionPlayerService {
 
-    //region EXISTS BY NAME
-
+    //region LOGIN USER
+    /**
+     * Method to log in a player.
+     *
+     * @param sessionPlayerDTO Session of the player to log in.
+     * @return SessionPlayerDTO The session of the player logged in.
+     */
     SessionPlayerDTO loginUser(SessionPlayerDTO sessionPlayerDTO);
+    //endregion LOGIN USER
 
+    //region EXISTS BY NAME
     /**
      * Method to verify if the player exists by name in the database.
      *

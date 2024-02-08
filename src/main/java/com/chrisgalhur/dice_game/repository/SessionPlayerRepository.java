@@ -1,6 +1,6 @@
 package com.chrisgalhur.dice_game.repository;
 
-import com.chrisgalhur.dice_game.model.SessionPlayer;
+import com.chrisgalhur.dice_game.entity.SessionPlayer;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;

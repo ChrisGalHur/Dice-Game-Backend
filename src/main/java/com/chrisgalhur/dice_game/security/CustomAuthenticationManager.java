@@ -1,5 +1,6 @@
 package com.chrisgalhur.dice_game.security;
 
+import com.chrisgalhur.dice_game.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

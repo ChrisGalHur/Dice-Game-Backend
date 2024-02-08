@@ -1,7 +1,6 @@
-package com.chrisgalhur.dice_game.service;
+package com.chrisgalhur.dice_game.entity;
 
-import com.chrisgalhur.dice_game.model.DataPlayerEntity;
-import com.chrisgalhur.dice_game.model.Role;
+import com.chrisgalhur.dice_game.dto.SessionPlayerDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,8 +16,8 @@ import java.util.List;
  * This class represents the main player entity, excluding sensitive information like password and roles,
  * which are managed by the authentication and registration process handled by a separate class.
  *
- * @see com.chrisgalhur.dice_game.model.SessionPlayerDTO DTO of this class.
- * @see com.chrisgalhur.dice_game.model.SessionPlayer Login and registration process.
+ * @see SessionPlayerDTO DTO of this class.
+ * @see com.chrisgalhur.dice_game.entity.SessionPlayer Login and registration process.
  *
  * @version 1.0
  * @author ChrisGalHur
@@ -44,6 +43,6 @@ public class Player {
     private List<Role> roles;
 
     @Field(name = "history")
-    private List<DataPlayerEntity> dataPlayer;
+    private List<DataPlayer> dataPlayer;
     //endregion ATTRIBUTES
 }

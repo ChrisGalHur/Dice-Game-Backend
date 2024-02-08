@@ -1,7 +1,6 @@
-package com.chrisgalhur.dice_game.model;
+package com.chrisgalhur.dice_game.response;
 
 import lombok.Data;
-import lombok.Setter;
 
 /**
  * Class to manage the authentication response.
@@ -11,7 +10,7 @@ import lombok.Setter;
  */
 
 @Data
-public class AuthResponseDTO {
+public class AuthResponse {
 
     //region ATTRIBUTES
     private String accessToken;
@@ -28,7 +27,7 @@ public class AuthResponseDTO {
      * @param accessToken The access token.
      * @param message The message.
      */
-    public AuthResponseDTO(String accessToken, String message) {
+    public AuthResponse(String accessToken, String message) {
         this.accessToken = accessToken;
         this.message = message;
     }

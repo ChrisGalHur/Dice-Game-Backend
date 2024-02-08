@@ -1,6 +1,6 @@
 package com.chrisgalhur.dice_game.repository;
 
-import com.chrisgalhur.dice_game.model.Role;
+import com.chrisgalhur.dice_game.entity.Role;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Manage the role repository on the database.
  *
- * @see com.chrisgalhur.dice_game.model.Role
+ * @see Role
  * @version 1.0
  * @author ChrisGalHur
  */

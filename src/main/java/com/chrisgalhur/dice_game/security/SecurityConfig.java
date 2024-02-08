@@ -1,7 +1,7 @@
 package com.chrisgalhur.dice_game.security;
 
+import com.chrisgalhur.dice_game.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -31,17 +31,14 @@ public class SecurityConfig {
 
     //region DEPENDENCY INJECTION
     private final JWTAuthEntryPoint jwtAuthEntryPoint;
-    private final CustomUserDetailsService userDetailsService;
 
     /**
      * Dependency injection of the custom user details service.
      *
-     * @param userDetailsService Custom user details service.
      * @param jwtAuthEntryPoint JWT authentication entry point.
      */
     @Autowired
-    public SecurityConfig(CustomUserDetailsService userDetailsService, JWTAuthEntryPoint jwtAuthEntryPoint){
-        this.userDetailsService = userDetailsService;
+    public SecurityConfig(JWTAuthEntryPoint jwtAuthEntryPoint){
         this.jwtAuthEntryPoint = jwtAuthEntryPoint;
     }
     //endregion DEPENDENCY INJECTION

@@ -1,5 +1,6 @@
 package com.chrisgalhur.dice_game.security;
 
+import com.chrisgalhur.dice_game.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

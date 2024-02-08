@@ -1,17 +1,14 @@
 package com.chrisgalhur.dice_game.service;
 
 import com.chrisgalhur.dice_game.exception.InvalidCredentialsException;
-import com.chrisgalhur.dice_game.model.AuthResponseDTO;
-import com.chrisgalhur.dice_game.model.SessionPlayerDTO;
-import com.chrisgalhur.dice_game.repository.SessionPlayerRepository;
+import com.chrisgalhur.dice_game.response.AuthResponse;
+import com.chrisgalhur.dice_game.dto.SessionPlayerDTO;
 import com.chrisgalhur.dice_game.security.CustomAuthenticationManager;
 import com.chrisgalhur.dice_game.security.JWTGenerator;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -51,8 +48,8 @@ public class AuthorizationServiceImpl implements AuthorizationService{
      * @return AuthResponseDTO with the authentication response.
      */
     @Override
-    public AuthResponseDTO authenticateRegisterPlayer(SessionPlayerDTO sessionPlayerDTO) {
-        AuthResponseDTO authValidated = validateRegistrationRequest(sessionPlayerDTO);
+    public AuthResponse authenticateRegisterPlayer(SessionPlayerDTO sessionPlayerDTO) {
+        AuthResponse authValidated = validateRegistrationRequest(sessionPlayerDTO);
 
         SessionPlayerDTO playerRegistered = sessionPlayerService.registerNewUser(sessionPlayerDTO);
 
@@ -68,10 +65,11 @@ public class AuthorizationServiceImpl implements AuthorizationService{
     //endregion AUTHENTICATE REGISTER PLAYER
 
     //region VALIDATE REGISTRATION REQUEST
-    private AuthResponseDTO validateRegistrationRequest(SessionPlayerDTO sessionPlayerDTO) {
+    private AuthResponse validateRegistrationRequest(SessionPlayerDTO sessionPlayerDTO) {
 
             if (sessionPlayerDTO == null) {
                 throw new InvalidCredentialsException("Invalid request body");
+                //todo: manejar error por codigos?
             }
 
             //validate if name of user is null or empty
@@ -82,7 +80,7 @@ public class AuthorizationServiceImpl implements AuthorizationService{
                 Authentication authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(playerRegistered.getName(), playerRegistered.getPassword()));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String token = jwtGenerator.generateToken(authentication);
-                return new AuthResponseDTO(token, "User registered with default name: " + playerRegistered.getName());
+                return new AuthResponse(token, "User registered with default name: " + playerRegistered.getName());
             }
 
             //validate if user already exists
@@ -91,7 +89,7 @@ public class AuthorizationServiceImpl implements AuthorizationService{
                         "Please select another name.");
             }
 
-            return new AuthResponseDTO(null, "User registered with name: " + sessionPlayerDTO.getName());
+            return new AuthResponse(null, "User registered with name: " + sessionPlayerDTO.getName());
     }
     //endregion VALIDATE REGISTRATION REQUEST
 
@@ -104,7 +102,7 @@ public class AuthorizationServiceImpl implements AuthorizationService{
      * @return AuthResponseDTO with the authentication response.
      */
     @Override
-    public AuthResponseDTO authenticateLoginPlayer(SessionPlayerDTO sessionPlayerDTO) {
+    public AuthResponse authenticateLoginPlayer(SessionPlayerDTO sessionPlayerDTO) {
         try {
             //validate if PlayerDTO is null or empty
             if (sessionPlayerDTO == null || StringUtils.isBlank(sessionPlayerDTO.getName()) || StringUtils.isEmpty(sessionPlayerDTO.getPassword())) {
@@ -120,10 +118,10 @@ public class AuthorizationServiceImpl implements AuthorizationService{
                 Authentication authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(sessionPlayerDTO.getName(), sessionPlayerDTO.getPassword()));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String token = jwtGenerator.generateToken(authentication);
-                return new AuthResponseDTO(token, "User " + sessionPlayerDTO.getName() + " logged in successfully.");
+                return new AuthResponse(token, "User " + sessionPlayerDTO.getName() + " logged in successfully.");
             }
         } catch (InvalidCredentialsException e) {
-            return new AuthResponseDTO(null, e.getMessage());
+            return new AuthResponse(null, e.getMessage());
         }
     }
 }

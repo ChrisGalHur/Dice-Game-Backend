@@ -1,4 +1,4 @@
-package com.chrisgalhur.dice_game.model;
+package com.chrisgalhur.dice_game.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +20,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "Player_session")
+@Document(collection = "Session_Player")
 public class SessionPlayer {
 
     //region ATTRIBUTES

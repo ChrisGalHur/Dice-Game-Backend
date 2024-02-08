@@ -1,4 +1,4 @@
-package com.chrisgalhur.dice_game.model;
+package com.chrisgalhur.dice_game.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DataPlayerEntity {
+public class DataPlayer {
 
     //region ATTRIBUTES
     @Id
@@ -38,7 +38,7 @@ public class DataPlayerEntity {
      * @param numDice2 Result of the second dice.
      * @param result Result of the game.
      */
-    public DataPlayerEntity(int numDice1, int numDice2, String result) {
+    public DataPlayer(int numDice1, int numDice2, String result) {
         this.numDice1 = numDice1;
         this.numDice2 = numDice2;
         this.result = result;

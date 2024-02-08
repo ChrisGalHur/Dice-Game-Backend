@@ -1,11 +1,12 @@
-package com.chrisgalhur.dice_game.model;
+package com.chrisgalhur.dice_game.dto;
 
+import com.chrisgalhur.dice_game.entity.DataPlayer;
+import com.chrisgalhur.dice_game.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +32,6 @@ public class PlayerDTO {
 
     private List<Role> role;
 
-    private List<DataPlayerEntity> dataPlayer;
+    private List<DataPlayer> dataPlayer;
     //endregion ATTRIBUTES
 }

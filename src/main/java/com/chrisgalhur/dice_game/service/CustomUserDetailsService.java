@@ -1,10 +1,10 @@
-package com.chrisgalhur.dice_game.security;
+package com.chrisgalhur.dice_game.service;
 
-import com.chrisgalhur.dice_game.model.Role;
-import com.chrisgalhur.dice_game.model.SessionPlayer;
+import com.chrisgalhur.dice_game.entity.Role;
+import com.chrisgalhur.dice_game.entity.SessionPlayer;
 import com.chrisgalhur.dice_game.repository.PlayerRepository;
 import com.chrisgalhur.dice_game.repository.SessionPlayerRepository;
-import com.chrisgalhur.dice_game.service.Player;
+import com.chrisgalhur.dice_game.entity.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

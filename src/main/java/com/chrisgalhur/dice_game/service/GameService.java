@@ -1,6 +1,17 @@
 package com.chrisgalhur.dice_game.service;
 
-//todo: javadoc
+/**
+ * Interface to manage the game service.
+ *
+ * @version 1.0
+ * @author ChrisGalHur
+ */
+
+import com.chrisgalhur.dice_game.dto.PlayerDTO;
+import com.chrisgalhur.dice_game.response.GameResponse;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface GameService {
+
+    GameResponse play(PlayerDTO playerDTO, HttpServletRequest request);
 }

@@ -1,8 +1,9 @@
 com.chrisgalhur.dice_game
 com.chrisgalhur.dice_game.config
 com.chrisgalhur.dice_game.controller
+com.chrisgalhur.dice_game.dto
+com.chrisgalhur.dice_game.entity
 com.chrisgalhur.dice_game.exception
-com.chrisgalhur.dice_game.model
 com.chrisgalhur.dice_game.repository
 com.chrisgalhur.dice_game.security
 com.chrisgalhur.dice_game.service

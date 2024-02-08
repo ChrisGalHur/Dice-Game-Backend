@@ -1,21 +1,18 @@
 package com.chrisgalhur.dice_game.controller;
 
 import com.chrisgalhur.dice_game.exception.InvalidCredentialsException;
-import com.chrisgalhur.dice_game.model.AuthResponseDTO;
-import com.chrisgalhur.dice_game.model.SessionPlayerDTO;
-import com.chrisgalhur.dice_game.security.CustomAuthenticationManager;
-import com.chrisgalhur.dice_game.security.JWTGenerator;
+import com.chrisgalhur.dice_game.response.AuthResponse;
+import com.chrisgalhur.dice_game.dto.SessionPlayerDTO;
 import com.chrisgalhur.dice_game.service.AuthorizationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.logging.Logger;
 
 /**
  * RESTFUL Controller class for handling only authentication operations.
@@ -31,22 +28,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthorizationController {
 
-    //region INJECTIONS
-    private final CustomAuthenticationManager customAuthenticationManager;
-    private final JWTGenerator jwtGenerator;
+    //region INJECTIONS and ATTRIBUTES
     private final AuthorizationServiceImpl authorizationService;
+    private static final Logger log = Logger.getLogger(AuthorizationController.class.getName());
 
     /**
      * Constructor of the class.0
      *
-     * @param customAuthenticationManager Custom authentication manager.
-     * @param jwtGenerator JWT generator.
      * @param authorizationService Authorization service implementation.
      *  */
     @Autowired
-    public AuthorizationController(CustomAuthenticationManager customAuthenticationManager, JWTGenerator jwtGenerator, AuthorizationServiceImpl authorizationService) {
-        this.customAuthenticationManager = customAuthenticationManager;
-        this.jwtGenerator = jwtGenerator;
+    public AuthorizationController(AuthorizationServiceImpl authorizationService) {
         this.authorizationService = authorizationService;
     }
     //endregion INJECTIONS
@@ -63,12 +55,14 @@ public class AuthorizationController {
      *        - 400 Bad Request: Invalid request body or player already exists.
      *  */
     @PostMapping("/register")
-    public ResponseEntity<AuthResponseDTO> register(@RequestBody SessionPlayerDTO sessionPlayerDTO) {
+    public ResponseEntity<AuthResponse> register(@RequestBody SessionPlayerDTO sessionPlayerDTO) {
+        log.info("endpoint /api/auth/register called");
+
         try{
-            AuthResponseDTO response = authorizationService.authenticateRegisterPlayer(sessionPlayerDTO);
+            AuthResponse response = authorizationService.authenticateRegisterPlayer(sessionPlayerDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }catch (InvalidCredentialsException e){
-            return ResponseEntity.badRequest().body(new AuthResponseDTO(null, e.getMessage()));
+            return ResponseEntity.badRequest().body(new AuthResponse(null, e.getMessage()));
         }
     }
     //endregion REGISTER
@@ -85,12 +79,14 @@ public class AuthorizationController {
      *        - 400 Bad Request: Invalid request body or player does not exist.
      *  */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody SessionPlayerDTO sessionPlayerDTO) {
+    public ResponseEntity<AuthResponse> login(@RequestBody SessionPlayerDTO sessionPlayerDTO) {
+        log.info("endpoint /api/auth/login called");
+
         try{
-            AuthResponseDTO response = authorizationService.authenticateLoginPlayer(sessionPlayerDTO);
+            AuthResponse response = authorizationService.authenticateLoginPlayer(sessionPlayerDTO);
             return ResponseEntity.ok().body(response);
         }catch (InvalidCredentialsException e){
-            return ResponseEntity.badRequest().body(new AuthResponseDTO(null, e.getMessage()));
+            return ResponseEntity.badRequest().body(new AuthResponse(null, e.getMessage()));
         }
     }
     //endregion LOGIN

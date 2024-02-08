@@ -1,7 +1,7 @@
 package com.chrisgalhur.dice_game.service;
 
-import com.chrisgalhur.dice_game.model.AuthResponseDTO;
-import com.chrisgalhur.dice_game.model.SessionPlayerDTO;
+import com.chrisgalhur.dice_game.response.AuthResponse;
+import com.chrisgalhur.dice_game.dto.SessionPlayerDTO;
 
 /**
  * Interface to manage the authorization service.
@@ -18,8 +18,16 @@ public interface AuthorizationService {
      * @param sessionPlayerDTO SessionPlayerDTO with the player information.
      * @return AuthResponseDTO with the authentication response.
      */
-    AuthResponseDTO authenticateRegisterPlayer(SessionPlayerDTO sessionPlayerDTO);
-
-    AuthResponseDTO authenticateLoginPlayer(SessionPlayerDTO sessionPlayerDTO);
+    AuthResponse authenticateRegisterPlayer(SessionPlayerDTO sessionPlayerDTO);
     //endregion AUTHENTICATE PLAYER
+
+    //region AUTHENTICATE LOGIN PLAYER
+    /**
+     * Method to authenticate the login of a player.
+     *
+     * @param sessionPlayerDTO Session of the player to log in.
+     * @return AuthResponseDTO Authentication response.
+     */
+    AuthResponse authenticateLoginPlayer(SessionPlayerDTO sessionPlayerDTO);
+    //endregion AUTHENTICATE LOGIN PLAYER
 }
