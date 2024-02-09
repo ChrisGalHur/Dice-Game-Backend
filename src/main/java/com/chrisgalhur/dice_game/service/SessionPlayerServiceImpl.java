@@ -57,6 +57,7 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
      * Registers a new player in the database.
      * Change the class of the sessionPlayer to SessionPlayerEntity.
      * Encrypt the password of the sessionPlayer.
+     * Generate a random UUID for the sessionPlayer and set it to the player.
      * Transform the sessionPlayerDTO to a PlayerEntity, set a default role for the player, and save it and the sessionPlayer in the database.
      * Returns the sessionPlayerDTO has saved in the database.
      *

@@ -65,10 +65,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
             throw new BadCredentialsException("Username not found");
         }
 
-        //todo : pruebas
         String enteredPass = (String) authentication.getCredentials();
-        Logger.getLogger("CustomAuthenticationManager").info("Entered pass: " + enteredPass);
-        Logger.getLogger("CustomAuthenticationManager").info("Stored pass: " + userDetail.getPassword());
 
         if (!securityConfig.passwordEncoder().matches(enteredPass, userDetail.getPassword())) {
             throw new BadCredentialsException("Wrong password");
