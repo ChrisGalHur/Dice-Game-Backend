@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.util.UUID;
+
 /**
  * Manage a player session out of the database.
  *
@@ -19,7 +21,7 @@ public class SessionPlayerDTO {
 
     //region ATTRIBUTES
     @Id
-    private String id;
+    private UUID id;
 
     private String name;
 

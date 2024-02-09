@@ -70,7 +70,7 @@ public class GameServiceImpl implements GameService{
         }
 
         // Validate the player id.
-        if(playerDTO.getId() == null || playerDTO.getId().isEmpty() || playerDTO.getId().isBlank()){
+        if(playerDTO.getId() == null){
             throw new InvalidPlayerException("Error: The player id is required.");
             //todo: manejar error por codigos?
         }else {

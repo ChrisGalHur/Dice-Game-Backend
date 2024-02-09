@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Manages the communication with the database for requests related and their games, except for registration and login.
@@ -14,7 +15,7 @@ import java.util.Optional;
  */
 
 @Repository
-public interface PlayerRepository extends MongoRepository<Player, String> {
+public interface PlayerRepository extends MongoRepository<Player, UUID> {
 
     //region FIND BY NAME
     /**

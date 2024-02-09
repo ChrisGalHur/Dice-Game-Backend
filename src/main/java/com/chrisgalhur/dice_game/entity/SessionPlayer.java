@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Manages the player session in the database.
@@ -25,7 +26,7 @@ public class SessionPlayer {
 
     //region ATTRIBUTES
     @Id
-    private String id;
+    private UUID id;
 
     @Field(name = "name")
     private String name;

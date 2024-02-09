@@ -4,6 +4,7 @@ import com.chrisgalhur.dice_game.entity.SessionPlayer;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Manages the communication with the database for player related requests regarding registration and login.
@@ -13,7 +14,7 @@ import java.util.Optional;
  */
 
 @Repository
-public interface SessionPlayerRepository extends MongoRepository<SessionPlayer, String> {
+public interface SessionPlayerRepository extends MongoRepository<SessionPlayer, UUID> {
 
     //region FIND BY NAME
     /**

@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Manage the data of player and her history out of database.
@@ -24,7 +25,7 @@ public class PlayerDTO {
 
     //region ATTRIBUTES
     @Id
-    private String id;
+    private UUID id;
 
     private String name;
 

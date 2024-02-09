@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Manages player data in the communication with the database.
@@ -31,7 +32,7 @@ public class Player {
 
     //region ATTRIBUTES
     @Id
-    private String id;
+    private UUID id;
 
     @Field(name = "name")
     private String name;

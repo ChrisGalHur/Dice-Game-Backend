@@ -4,6 +4,7 @@ import com.chrisgalhur.dice_game.entity.Player;
 import com.chrisgalhur.dice_game.entity.Role;
 import com.chrisgalhur.dice_game.entity.SessionPlayer;
 import com.chrisgalhur.dice_game.dto.SessionPlayerDTO;
+import com.chrisgalhur.dice_game.exception.InvalidCredentialsException;
 import com.chrisgalhur.dice_game.repository.PlayerRepository;
 import com.chrisgalhur.dice_game.repository.SessionPlayerRepository;
 import org.modelmapper.ModelMapper;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.UUID;
 
 /**
  * Class to manage the player service.
@@ -64,19 +66,25 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
      * @return SessionPlayerDTO Player registered.
      */
     @Override
-    public SessionPlayerDTO registerNewUser(SessionPlayerDTO sessionPlayerDTO) {
-        //Manage sessionPlayer
-        SessionPlayer sessionPlayer = modelMapper.map(sessionPlayerDTO, SessionPlayer.class);
-        sessionPlayer.setPassword(passwordEncoder.encode(sessionPlayer.getPassword()));
+    public SessionPlayerDTO registerNewUser(SessionPlayerDTO sessionPlayerDTO){
+        try {
+            //Manage sessionPlayer
+            SessionPlayer sessionPlayer = modelMapper.map(sessionPlayerDTO, SessionPlayer.class);
+            sessionPlayer.setPassword(passwordEncoder.encode(sessionPlayer.getPassword()));
+            sessionPlayer.setId(UUID.randomUUID());
 
-        //Manage player
-        Player player = modelMapper.map(sessionPlayerDTO, Player.class);
-        designRoles(player);
-        playerRepository.save(player);
+            //Manage player
+            Player player = modelMapper.map(sessionPlayerDTO, Player.class);
+            player.setId(sessionPlayer.getId());
+            designRoles(player);
+            playerRepository.save(player);
 
 
-        SessionPlayer playerRegistered = sessionPlayerRepository.save(sessionPlayer);
-        return modelMapper.map(playerRegistered, SessionPlayerDTO.class);
+            SessionPlayer playerRegistered = sessionPlayerRepository.save(sessionPlayer);
+            return modelMapper.map(playerRegistered, SessionPlayerDTO.class);
+        }catch (Exception e){
+            throw new InvalidCredentialsException("Error: The player could not be registered.");
+        }
     }
 
     private void designRoles(Player playerToDesign) {
