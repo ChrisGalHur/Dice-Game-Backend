@@ -16,9 +16,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 /**
- * Class to manage the player service.
- * Implements SessionPlayerService interface.
- *
+ * Class to manage the player service implementation.
  * @see SessionPlayerService
  *
  * @version 1.0

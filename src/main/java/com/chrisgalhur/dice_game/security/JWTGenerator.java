@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Handles JWT generation and validation.
@@ -19,31 +20,16 @@ import java.util.Date;
 @Component
 public class JWTGenerator {
 
-    //region ATTRIBUTES
-    private final Key key;
-    //endregion ATTRIBUTES
-
-    //region CONSTRUCTOR
-    /**
-     * Constructor of the class.
-     * Assigns a secret key to the key attribute for JWT generation and validation.
-     */
-    public JWTGenerator(){
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    }
-    //endregion CONSTRUCTOR
-
     //region GENERATE TOKEN
     /**
      * Generates a JWT token from an authentication object.
      * The generated JWT token includes the subject (username), issue date, and expiration date.
      *
-     * @param authentication Authentication object.
+     * @param idPlayer Id of the player.
      * @return JWT token.
      * @throws AuthenticationCredentialsNotFoundException If the authentication object is invalid.
      */
-    public String generateToken(Authentication authentication) throws AuthenticationCredentialsNotFoundException{
-        String username = authentication.getName();
+    public String generateToken(UUID idPlayer) throws AuthenticationCredentialsNotFoundException{
         Date currentDate = new Date();
         Date expirationDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
 
@@ -51,10 +37,10 @@ public class JWTGenerator {
         String token;
         try{
             token = Jwts.builder()
-                    .setSubject(username)
+                    .setSubject(idPlayer.toString())
                     .setIssuedAt(new Date())
                     .setExpiration(expirationDate)
-                    .signWith(key, SignatureAlgorithm.HS256)
+                    .signWith(SecurityConstants.SECRET_KEY, SignatureAlgorithm.HS256)
                     .compact();
         }catch (ExpiredJwtException | MalformedJwtException ex){
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect.");
@@ -74,7 +60,7 @@ public class JWTGenerator {
      */
     public String getUserNameFromJWT(String token){
         Claims claims = Jwts.parser()
-                .setSigningKey(key)
+                .setSigningKey(SecurityConstants.SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
@@ -91,7 +77,7 @@ public class JWTGenerator {
      */
     public boolean validateToken(String token){
         try{
-            Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+            Jwts.parser().setSigningKey(SecurityConstants.SECRET_KEY).parseClaimsJws(token).getBody();
             return true;
         }catch (Exception ex){
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect.");

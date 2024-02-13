@@ -8,13 +8,14 @@ import com.chrisgalhur.dice_game.repository.PlayerRepository;
 import com.chrisgalhur.dice_game.response.GameResponse;
 import com.chrisgalhur.dice_game.util.Game;
 import jakarta.servlet.http.HttpServletRequest;
-import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 /**
- * Class to manage the game service.
+ * Class to manage the game service implementation.
+ * @see GameService for the interface.
  *
  * @version 1.0
  * @author ChrisGalHur
@@ -45,53 +46,56 @@ public class GameServiceImpl implements GameService{
      * - Make a dice roll.
      *
      * @param playerDTO The player DTO.
-     * @param request  The request.
      * @return GameResponse The game response.
      */
     @Override
-    public GameResponse play(PlayerDTO playerDTO, HttpServletRequest request) {
-        Player playerPlaying = validateGame(playerDTO);
+    public GameResponse play(PlayerDTO playerDTO) {
+        try{
+            Player playerPlaying = validateGame(playerDTO);
 
-        //make a dice roll
-        DataPlayer savingGame = Game.roll();
+            //make a dice roll
+            DataPlayer savingGame = Game.roll();
 
-        //save the game
-        playerPlaying.getDataPlayer().add(savingGame);
-        playerRepository.save(playerPlaying);
+            //save the game
+            playerPlaying.getDataPlayer().add(savingGame);
+            playerRepository.save(playerPlaying);
 
-        return new GameResponse(savingGame.getResult(), (byte) savingGame.getNumDice1(), (byte) savingGame.getNumDice2());
+            return new GameResponse(savingGame.getResult(), (byte) savingGame.getNumDice1(), (byte) savingGame.getNumDice2());
+        }catch (InvalidPlayerException e){
+            return new GameResponse(null, (byte) 0, (byte) 0);
+        }
     }
 
     private Player validateGame(PlayerDTO playerDTO) {
+        try {
+            if (playerDTO == null) {
+                throw new InvalidPlayerException("Error: The player is required.");
+                //todo: manejar error por codigos?
+            }
 
-        if(playerDTO == null){
-            throw new InvalidPlayerException("Error: The player is required.");
-            //todo: manejar error por codigos?
-        }
+            // Get the player name from the security context to find the player
+            String playerName = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        // Validate the player id.
-        if(playerDTO.getId() == null){
-            throw new InvalidPlayerException("Error: The player id is required.");
-            //todo: manejar error por codigos?
-        }else {
             // Check the player id.
-            if (!playerRepository.existsById(playerDTO.getId())) {
+            if (!playerRepository.existsByName(playerName)) {
                 throw new InvalidPlayerException("Error: This player does not exist.");
                 //todo: manejar error por codigos?
-            }else{
+            } else {
                 // Get the player
-                Player playerPlaying = playerRepository.findById(playerDTO.getId()).orElse(null);
+                Player playerPlaying = playerRepository.findByName(playerName).orElse(null);
 
-                if(playerPlaying != null){
-                    if(playerPlaying.getDataPlayer() == null){
+                if (playerPlaying != null) {
+                    if (playerPlaying.getDataPlayer() == null) {
                         playerPlaying.setDataPlayer(new ArrayList<>());
-
                         return playerPlaying;
                     }
+                    return playerPlaying;
                 }
                 throw new InvalidPlayerException("Error: The player does not exist.");
                 //todo: manejar error por codigos?
             }
+        } catch (InvalidPlayerException e) {
+            throw new InvalidPlayerException("error authenticating the player");
         }
     }
     //endregion PLAY

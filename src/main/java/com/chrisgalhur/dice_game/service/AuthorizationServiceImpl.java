@@ -55,7 +55,7 @@ public class AuthorizationServiceImpl implements AuthorizationService{
 
         Authentication authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(playerRegistered.getName(), sessionPlayerDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtGenerator.generateToken(authentication);
+        String token = jwtGenerator.generateToken(playerRegistered.getId());
 
         if(sessionPlayerDTO.getName().equals(playerRegistered.getName())){
             authValidated.setAccessToken(token);
@@ -77,9 +77,9 @@ public class AuthorizationServiceImpl implements AuthorizationService{
                 sessionPlayerDTO.setName("UNKNOWN");
                 SessionPlayerDTO playerRegistered = sessionPlayerService.registerNewUser(sessionPlayerDTO);
 
-                Authentication authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(playerRegistered.getName(), playerRegistered.getPassword()));
+                Authentication authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(String.valueOf(playerRegistered.getId()), playerRegistered.getName()));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                String token = jwtGenerator.generateToken(authentication);
+                String token = jwtGenerator.generateToken(sessionPlayerDTO.getId());
                 return new AuthResponse(token, "User registered with default name: " + playerRegistered.getName());
             }
 
@@ -117,7 +117,7 @@ public class AuthorizationServiceImpl implements AuthorizationService{
 
                 Authentication authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(sessionPlayerDTO.getName(), sessionPlayerDTO.getPassword()));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                String token = jwtGenerator.generateToken(authentication);
+                String token = jwtGenerator.generateToken(sessionPlayerLogged.getId());
                 return new AuthResponse(token, "User " + sessionPlayerDTO.getName() + " logged in successfully.");
             }
         } catch (InvalidCredentialsException e) {

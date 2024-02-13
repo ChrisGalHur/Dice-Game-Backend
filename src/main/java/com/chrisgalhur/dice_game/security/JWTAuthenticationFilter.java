@@ -1,5 +1,6 @@
 package com.chrisgalhur.dice_game.security;
 
+import com.chrisgalhur.dice_game.repository.PlayerRepository;
 import com.chrisgalhur.dice_game.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,6 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Handles JWT-based authentication.
@@ -29,6 +31,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private PlayerRepository playerRepository;
     //endregion DEPENDENCY INJECTION
 
     //region DO FILTER INTERNAL
@@ -47,9 +52,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         String token = getJWTFromRequest(request);
 
         if(StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
-            String userName = tokenGenerator.getUserNameFromJWT(token);
+            String id = tokenGenerator.getUserNameFromJWT(token);
+            String name = playerRepository.findById(UUID.fromString(id)).orElseThrow(() -> new RuntimeException("Player not found")).getName();
 
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(name);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

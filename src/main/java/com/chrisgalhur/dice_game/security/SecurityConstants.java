@@ -1,5 +1,10 @@
 package com.chrisgalhur.dice_game.security;
 
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
+import java.security.Key;
+
 /**
  * Stores security constants.
  *
@@ -21,4 +26,11 @@ public class SecurityConstants {
      */
     public static final String AUTHORIZED_URL = "/api/auth";
     //endregion CONSTANTS
+
+    /**
+     * Secret key for JWT generation and validation.
+     *
+     * @see Keys#secretKeyFor(SignatureAlgorithm)
+     */
+    public static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 }
