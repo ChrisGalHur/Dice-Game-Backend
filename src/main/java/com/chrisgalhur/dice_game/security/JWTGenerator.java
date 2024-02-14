@@ -33,7 +33,6 @@ public class JWTGenerator {
         Date currentDate = new Date();
         Date expirationDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
 
-
         String token;
         try{
             token = Jwts.builder()

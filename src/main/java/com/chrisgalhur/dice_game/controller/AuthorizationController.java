@@ -4,6 +4,7 @@ import com.chrisgalhur.dice_game.exception.InvalidCredentialsException;
 import com.chrisgalhur.dice_game.response.AuthResponse;
 import com.chrisgalhur.dice_game.dto.SessionPlayerDTO;
 import com.chrisgalhur.dice_game.service.AuthorizationServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,12 @@ import java.util.logging.Logger;
  */
 
 @RestController
+@Slf4j
 @RequestMapping("/api/auth")
 public class AuthorizationController {
 
     //region INJECTIONS and ATTRIBUTES
     private final AuthorizationServiceImpl authorizationService;
-    private static final Logger log = Logger.getLogger(AuthorizationController.class.getName());
 
     /**
      * Constructor of the class.0

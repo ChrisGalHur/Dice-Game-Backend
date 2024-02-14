@@ -1,5 +1,6 @@
 package com.chrisgalhur.dice_game.service;
 
+import com.chrisgalhur.dice_game.dto.PlayerDTO;
 import com.chrisgalhur.dice_game.dto.SessionPlayerDTO;
 
 /**
@@ -40,4 +41,13 @@ public interface SessionPlayerService {
      */
     SessionPlayerDTO registerNewUser(SessionPlayerDTO playerDTO);
     //endregion REGISTER NEW USER
+
+    //region UPDATE NAME
+    /**
+     * Method to update the session player name.
+     *
+     * @param playerDTO The player DTO to update.
+     * @param name The new name of the player.
+     */
+    void updateName(String name, String newName);
 }

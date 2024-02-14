@@ -1,6 +1,7 @@
 package com.chrisgalhur.dice_game.response;
 
-import lombok.Data;
+
+import lombok.Getter;
 
 /**
  * Class to manage the player response.
@@ -9,11 +10,11 @@ import lombok.Data;
  * @author ChrisGalHur
  */
 
-@Data
+@Getter
 public class PlayerResponse{
 
     //region ATTRIBUTES
-    private String message;
+    private final String message;
     //endregion ATTRIBUTES
 
     //region CONSTRUCTOR

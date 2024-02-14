@@ -5,6 +5,7 @@ import com.chrisgalhur.dice_game.entity.Role;
 import com.chrisgalhur.dice_game.entity.SessionPlayer;
 import com.chrisgalhur.dice_game.dto.SessionPlayerDTO;
 import com.chrisgalhur.dice_game.exception.InvalidCredentialsException;
+import com.chrisgalhur.dice_game.exception.InvalidPlayerException;
 import com.chrisgalhur.dice_game.repository.PlayerRepository;
 import com.chrisgalhur.dice_game.repository.SessionPlayerRepository;
 import org.modelmapper.ModelMapper;
@@ -86,6 +87,11 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
         }
     }
 
+    /**
+     * A supplementary method of registerNewUser to design the roles of the player.
+     * Set the roles of the player.
+     * @param playerToDesign The player to design the roles.
+     */
     private void designRoles(Player playerToDesign) {
         playerToDesign.setRoles(Collections.singletonList(new Role("USER")));
         //todo: other roles can be added here
@@ -113,6 +119,7 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
         }
         return null;
     }
+    //endregion LOGIN USER
 
     //region EXIST BY NAME
 
@@ -127,6 +134,27 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
         return sessionPlayerRepository.existsByName(name);
     }
     //endregion METHODS EXIST BY NAME
+
+    //region UPDATE NAME
+    /**
+     * Method to update the session player name.
+     * This method is responsible for:
+     * - Update the session player name.
+     * - Save the session player in the database.
+     *
+     * @param name The name of the player.
+     * @param newName The new name of the player.
+     */
+    @Override
+    public void updateName(String name, String newName) {
+        try {
+            SessionPlayer sessionPlayer = sessionPlayerRepository.findByName(name).orElseThrow(() -> new InvalidCredentialsException("Error: The player does not exist."));
+            sessionPlayer.setName(newName);
+            sessionPlayerRepository.save(sessionPlayer);
+        }catch (InvalidPlayerException e){
+            throw new InvalidPlayerException(e.getErrorMessage());
+        }
+    }
 }
 
 

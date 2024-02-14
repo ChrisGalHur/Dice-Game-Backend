@@ -59,10 +59,9 @@ public class GameServiceImpl implements GameService{
             //save the game
             playerPlaying.getDataPlayer().add(savingGame);
             playerRepository.save(playerPlaying);
-
             return new GameResponse(savingGame.getResult(), (byte) savingGame.getNumDice1(), (byte) savingGame.getNumDice2());
         }catch (InvalidPlayerException e){
-            return new GameResponse(null, (byte) 0, (byte) 0);
+            return new GameResponse("Something went wrong", (byte) 0, (byte) 0);
         }
     }
 
