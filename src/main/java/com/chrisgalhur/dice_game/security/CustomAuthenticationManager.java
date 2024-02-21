@@ -10,8 +10,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.logging.Logger;
-
 /**
  * CustomAuthenticationManager is responsible for authenticating users by username and password.
  * It implements the AuthenticationManager interface and is used to authenticate user credentials.
@@ -27,7 +25,6 @@ import java.util.logging.Logger;
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Component
 public class CustomAuthenticationManager implements AuthenticationManager {
 

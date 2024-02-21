@@ -1,10 +1,9 @@
 package com.chrisgalhur.dice_game.repository;
 
-import com.chrisgalhur.dice_game.dto.PlayerDTO;
 import com.chrisgalhur.dice_game.entity.Player;
+import io.micrometer.common.lang.NonNullApi;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,7 +13,7 @@ import java.util.UUID;
  * @version 1.0
  * @author ChrisGalHur
  */
-
+@NonNullApi
 @Repository
 public interface PlayerRepository extends MongoRepository<Player, UUID> {
 
@@ -32,7 +31,7 @@ public interface PlayerRepository extends MongoRepository<Player, UUID> {
     /**
      * Find a player by his id.
      *
-     * @param id Id of the player to find.
+     * @param id ID of the player to find.
      * @return Player found or empty.
      */
     Optional<Player> findById(UUID id);

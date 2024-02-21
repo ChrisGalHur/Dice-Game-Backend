@@ -1,7 +1,5 @@
 package com.chrisgalhur.dice_game.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 /**

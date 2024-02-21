@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @SpringBootApplication
 public class DiceGameApplication {
 

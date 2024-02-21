@@ -18,12 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Service;
 
 /**
- * Configuration class for Spring Security.
+ * Configuration class for Spring Security to handle authentication and authorization with JWT (JSON Web Tokens) to enter the API.
  *
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Service
 @Configuration
 @EnableWebSecurity
@@ -46,11 +45,19 @@ public class SecurityConfig {
     //region FILTER CHAIN
     /**
      * Configures the security filter chain to handle authentication and authorize http to enter the API.
+     * Security filter is created:
+     * <ul>
+     *     <li>Disables CSRF (Cross-Site Request Forgery) protection.</li>
+     *     <li>Handles authentication entry point exception related to JWT authentication.</li>
+     *     <li>Authorizes HTTP requests to enter the API.</li>
+     *     <li>Adds the JWT authentication filter before the username and password authentication filter.</li>
+     *     <li>Enables HTTP basic authentication with default settings.</li>
+     * </ul>
+     *
      * The authentication is managed by the {@link JWTAuthenticationFilter}.
      * The authentication entry point is provided by the {@link JWTAuthEntryPoint}.
      * The authentication manager is implemented in {@link CustomUserDetailsService}.
      * The password encoder is provided by {@link BCryptPasswordEncoder}.
-     *
      *
      * @param http HTTP security.
      * @return Security filter chain.

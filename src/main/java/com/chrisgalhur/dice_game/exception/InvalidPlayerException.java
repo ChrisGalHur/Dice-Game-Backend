@@ -12,6 +12,9 @@ import lombok.Getter;
 public class InvalidPlayerException extends RuntimeException{
 
         //region ATTRIBUTES
+        /**
+         * Error message to return on endpoint whit invalid player.
+         */
         private final String errorMessage;
         //endregion ATTRIBUTES
 

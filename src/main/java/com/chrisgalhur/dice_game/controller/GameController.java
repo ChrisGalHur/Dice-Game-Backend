@@ -7,27 +7,25 @@ import com.chrisgalhur.dice_game.response.GameResponse;
 import com.chrisgalhur.dice_game.response.PlayerResponse;
 import com.chrisgalhur.dice_game.service.GameService;
 import com.chrisgalhur.dice_game.service.PlayerService;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.logging.Logger;
-
 /**
  * Controller class for handling the game endpoints.
  * This class is responsible for handling the incoming requests for the game.
- * - Play: Make a dice roll.
+ * - POST /play: Play the game.
+ * - PUT /update: Update the player name.
+ * - DELETE /deleteHistory: Delete the player history.
+ * - GET /getHistoryPlayer: Get the player history.
  *
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Controller
-@Slf4j
+@Slf4j // Lombok annotation to auto-generate the log field.
 @RequestMapping("/game")
 public class GameController {
 
@@ -39,6 +37,7 @@ public class GameController {
      * Constructor of the class to inject the dependencies.
      *
      * @param gameService The game service.
+     * @param playerService The player service.
      */
     @Autowired
     public GameController(GameService gameService, PlayerService playerService) {
@@ -50,17 +49,18 @@ public class GameController {
     //region PLAY
     /**
      * Method to play the game.
-     * This method is responsible for:
+     * This method handles POST requests to play the game and returns the game response.
      * - Play the game.
      * - Return the game response.
      *
-     * @param playerDTO The player DTO.
+     * @param playerDTO The player DTO containing a player name.
      * @return ResponseEntity<GameResponse> The game response.
      * @throws InvalidPlayerException To handle the invalid player exception.
      */
     @ExceptionHandler(InvalidPlayerException.class)
     @PostMapping("/play")
     public ResponseEntity<GameResponse> play(@RequestBody PlayerDTO playerDTO) {
+        log.info("endpoint /game/play called");
 
         try{
             GameResponse gameResponse = gameService.play(playerDTO);
@@ -78,7 +78,7 @@ public class GameController {
      * - Update the player name.
      * - Return the player response.
      *
-     * @param playerDTO The player DTO with the new name.
+     * @param playerDTO The player DTO with only the player name.
      * @return ResponseEntity<PlayerResponse> The player response.
      * @throws InvalidPlayerException To handle the invalid player exception.
      */
@@ -102,7 +102,7 @@ public class GameController {
      * This method is responsible for:
      * - Delete the player history.
      *
-     * @param playerDTO The player DTO.
+     * @param playerDTO The player DTO with only the player name.
      * @return ResponseEntity<PlayerResponse> The player response.
      * @throws InvalidPlayerException To handle the invalid player exception.
      */
@@ -112,7 +112,7 @@ public class GameController {
         log.info("endpoint /game/delete called");
 
         try{
-            PlayerResponse playerResponse = playerService.deletePlayerHistory(playerDTO);
+            PlayerResponse playerResponse = playerService.deletePlayerHistory();
             return ResponseEntity.ok(playerResponse);
         }catch (InvalidPlayerException e){
             return ResponseEntity.badRequest().body(new PlayerResponse(e.getErrorMessage()));
@@ -132,7 +132,6 @@ public class GameController {
     @ExceptionHandler(InvalidPlayerException.class)
     @GetMapping("/getHistoryPlayer")
     public ResponseEntity<DataPlayerResponse> getPlayerHistory() {
-        // logger with SLF4J
         log.info("endpoint /game/history called");
 
         try{
@@ -143,5 +142,4 @@ public class GameController {
         }
     }
     //endregion GET PLAYER HISTORY
-
 }

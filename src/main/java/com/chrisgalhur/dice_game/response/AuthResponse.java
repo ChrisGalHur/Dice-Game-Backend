@@ -8,7 +8,6 @@ import lombok.Data;
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Data
 public class AuthResponse {
 

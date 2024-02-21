@@ -13,13 +13,17 @@ import org.springframework.stereotype.Service;
 
 /**
  * Implementation of the authorization service.
+ * @see AuthorizationService for the interface.
  *
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService{
+
+    //region ATTRIBUTES
+    private static final String INVALID_REQUEST_BODY = "Invalid request body";
+    //endregion ATTRIBUTES
 
     //region INJECTIONS
     private final SessionPlayerServiceImpl sessionPlayerService;
@@ -45,7 +49,8 @@ public class AuthorizationServiceImpl implements AuthorizationService{
      * Method to authenticate a player.
      *
      * @param sessionPlayerDTO SessionPlayerDTO with the player information.
-     * @return AuthResponseDTO with the authentication response.
+     * @return AuthResponseDTO With the authentication response.
+     * @throws InvalidCredentialsException If the request body is invalid or the player already exists.
      */
     @Override
     public AuthResponse authenticateRegisterPlayer(SessionPlayerDTO sessionPlayerDTO) {
@@ -65,11 +70,19 @@ public class AuthorizationServiceImpl implements AuthorizationService{
     //endregion AUTHENTICATE REGISTER PLAYER
 
     //region VALIDATE REGISTRATION REQUEST
+    /**
+     * Method to validate the registration request.
+     * If the request is valid, the player is registered.
+     * If the player already exists, an exception is thrown.
+     *
+     * @param sessionPlayerDTO SessionPlayerDTO with the player information.
+     * @return AuthResponseDTO With the authentication response.
+     * @throws InvalidCredentialsException If the request body is invalid or the player already exists.
+     */
     private AuthResponse validateRegistrationRequest(SessionPlayerDTO sessionPlayerDTO) {
 
             if (sessionPlayerDTO == null) {
-                throw new InvalidCredentialsException("Invalid request body");
-                //todo: manejar error por codigos?
+                throw new InvalidCredentialsException(INVALID_REQUEST_BODY);
             }
 
             //validate if name of user is null or empty
@@ -98,15 +111,15 @@ public class AuthorizationServiceImpl implements AuthorizationService{
      * Method to authenticate a player when logging in.
      *
      * @param sessionPlayerDTO SessionPlayerDTO with the player information.
-     * @throws InvalidCredentialsException if the request body is invalid or the player does not exist.
-     * @return AuthResponseDTO with the authentication response.
+     * @throws InvalidCredentialsException If the request body is invalid or the player does not exist.
+     * @return AuthResponseDTO With the authentication response.
      */
     @Override
     public AuthResponse authenticateLoginPlayer(SessionPlayerDTO sessionPlayerDTO) {
         try {
             //validate if PlayerDTO is null or empty
             if (sessionPlayerDTO == null || StringUtils.isBlank(sessionPlayerDTO.getName()) || StringUtils.isEmpty(sessionPlayerDTO.getPassword())) {
-                throw new InvalidCredentialsException("Invalid request body");
+                throw new InvalidCredentialsException(INVALID_REQUEST_BODY);
             }
 
             SessionPlayerDTO sessionPlayerLogged = sessionPlayerService.loginUser(sessionPlayerDTO);
@@ -124,4 +137,5 @@ public class AuthorizationServiceImpl implements AuthorizationService{
             return new AuthResponse(null, e.getMessage());
         }
     }
+    //endregion AUTHENTICATE LOGIN PLAYER
 }

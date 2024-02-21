@@ -1,12 +1,8 @@
 package com.chrisgalhur.dice_game.security;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import java.security.Key;
 import java.util.Date;
 import java.util.UUID;
 
@@ -16,7 +12,6 @@ import java.util.UUID;
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Component
 public class JWTGenerator {
 
@@ -25,7 +20,7 @@ public class JWTGenerator {
      * Generates a JWT token from an authentication object.
      * The generated JWT token includes the subject (username), issue date, and expiration date.
      *
-     * @param idPlayer Id of the player.
+     * @param idPlayer ID of the player.
      * @return JWT token.
      * @throws AuthenticationCredentialsNotFoundException If the authentication object is invalid.
      */

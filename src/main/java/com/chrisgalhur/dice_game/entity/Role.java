@@ -9,7 +9,6 @@ import lombok.Data;
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Data
 @AllArgsConstructor
 public class Role {

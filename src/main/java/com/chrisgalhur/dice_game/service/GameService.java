@@ -13,5 +13,13 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface GameService {
 
+    //region PLAY
+    /**
+     * Method to play the game.
+     *
+     * @param playerDTO The player DTO.
+     * @return GameResponse with the game information.
+     */
     GameResponse play(PlayerDTO playerDTO);
+    //endregion PLAY
 }

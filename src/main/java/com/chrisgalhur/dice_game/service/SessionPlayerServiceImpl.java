@@ -12,7 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -23,7 +23,6 @@ import java.util.UUID;
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Service
 public class SessionPlayerServiceImpl implements SessionPlayerService {
 
@@ -51,13 +50,13 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
     //endregion DEPENDENCY INJECTION
 
     //region REGISTER NEW USER
-
     /**
      * Registers a new player in the database.
      * Change the class of the sessionPlayer to SessionPlayerEntity.
      * Encrypt the password of the sessionPlayer.
      * Generate a random UUID for the sessionPlayer and set it to the player.
-     * Transform the sessionPlayerDTO to a PlayerEntity, set a default role for the player, and save it and the sessionPlayer in the database.
+     * Transform the sessionPlayerDTO to a PlayerEntity, set a default role for the player,
+     * set the registration date and save it and the sessionPlayer in the database.
      * Returns the sessionPlayerDTO has saved in the database.
      *
      * @see SessionPlayer The class to manage the session player.
@@ -77,10 +76,11 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
             Player player = modelMapper.map(sessionPlayerDTO, Player.class);
             player.setId(sessionPlayer.getId());
             designRoles(player);
+            player.setRegistration(LocalDateTime.now());
             playerRepository.save(player);
 
 
-            SessionPlayer playerRegistered = sessionPlayerRepository.save(sessionPlayer);
+            SessionPlayer playerRegistered = sessionPlayerRepository.save(sessionPlayer).orElseThrow(() -> new InvalidCredentialsException("Error: The player could not be registered."));
             return modelMapper.map(playerRegistered, SessionPlayerDTO.class);
         }catch (Exception e){
             throw new InvalidCredentialsException("Error: The player could not be registered.");
@@ -94,7 +94,6 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
      */
     private void designRoles(Player playerToDesign) {
         playerToDesign.setRoles(Collections.singletonList(new Role("USER")));
-        //todo: other roles can be added here
     }
     //endregion REGISTER NEW USER
 
@@ -122,7 +121,6 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
     //endregion LOGIN USER
 
     //region EXIST BY NAME
-
     /**
      * Verifies if the player exists by name in the database.
      *
@@ -137,13 +135,11 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
 
     //region UPDATE NAME
     /**
-     * Method to update the session player name.
-     * This method is responsible for:
-     * - Update the session player name.
-     * - Save the session player in the database.
+     * Method to update the session player name if the player exists in the database.
      *
      * @param name The name of the player.
      * @param newName The new name of the player.
+     * @throws InvalidPlayerException If the player does not exist.
      */
     @Override
     public void updateName(String name, String newName) {
@@ -155,6 +151,7 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
             throw new InvalidPlayerException(e.getErrorMessage());
         }
     }
+    //endregion UPDATE NAME
 }
 
 

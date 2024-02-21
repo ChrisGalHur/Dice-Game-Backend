@@ -1,6 +1,7 @@
 package com.chrisgalhur.dice_game.repository;
 
 import com.chrisgalhur.dice_game.entity.SessionPlayer;
+import io.micrometer.common.lang.NonNullApi;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
@@ -12,7 +13,7 @@ import java.util.UUID;
  * @version 1.0
  * @author ChrisGalHur
  */
-
+@NonNullApi
 @Repository
 public interface SessionPlayerRepository extends MongoRepository<SessionPlayer, UUID> {
 
@@ -43,7 +44,6 @@ public interface SessionPlayerRepository extends MongoRepository<SessionPlayer, 
      * @param player Player to save.
      * @return Player saved.
      */
-    //todo: check if this is necessary
-    SessionPlayer save(SessionPlayer player);
+    Optional<SessionPlayer> save(SessionPlayer player);
     //endregion SAVE
 }

@@ -11,7 +11,6 @@ import java.security.Key;
  * @version 1.0
  * @author ChrisGalHur
  */
-
 public class SecurityConstants {
 
     //region CONSTANTS
@@ -22,10 +21,9 @@ public class SecurityConstants {
     public static final long JWT_EXPIRATION = 3600000;
 
     /**
-     * Autorized URL.
+     * Authorized URL for JWT authentication.
      */
     public static final String AUTHORIZED_URL = "/api/auth";
-    //endregion CONSTANTS
 
     /**
      * Secret key for JWT generation and validation.
@@ -33,4 +31,13 @@ public class SecurityConstants {
      * @see Keys#secretKeyFor(SignatureAlgorithm)
      */
     public static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    //endregion CONSTANTS
+
+    //region PRIVATE CONSTRUCTOR
+    /**
+     * Private constructor to prevent instantiation of this class.
+     */
+    private SecurityConstants() {
+        throw new IllegalStateException("No instance allowed for this class.");
+    }
 }

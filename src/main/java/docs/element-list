@@ -5,5 +5,7 @@ com.chrisgalhur.dice_game.dto
 com.chrisgalhur.dice_game.entity
 com.chrisgalhur.dice_game.exception
 com.chrisgalhur.dice_game.repository
+com.chrisgalhur.dice_game.response
 com.chrisgalhur.dice_game.security
 com.chrisgalhur.dice_game.service
+com.chrisgalhur.dice_game.util

@@ -12,9 +12,33 @@ import com.chrisgalhur.dice_game.response.PlayerResponse;
  * @author ChrisGalHur
  */
 public interface PlayerService {
+
+    //region UPDATE NAME
+    /**
+     * Method to register a new player in the database.
+     *
+     * @param playerDTO Player to register.
+     * @return PlayerResponse with the player information.
+     */
     PlayerResponse updateName(PlayerDTO playerDTO);
+    //endregion UPDATE NAME
 
-    PlayerResponse deletePlayerHistory(PlayerDTO playerDTO) throws InvalidPlayerException;
+    //region DELETE PLAYER
+    /**
+     * Method to delete a player from the database.
+     *
+     * @return PlayerResponse with the player information.
+     * @throws InvalidPlayerException If the player is not found.
+     */
+    PlayerResponse deletePlayerHistory() throws InvalidPlayerException;
+    //endregion DELETE PLAYER
 
+    //region GET PLAYER HISTORY
+    /**
+     * Method to get the player history from the database.
+     *
+     * @return DataPlayerResponse with the player history.
+     */
     DataPlayerResponse getPlayerHistory();
+    //endregion GET PLAYER HISTORY
 }

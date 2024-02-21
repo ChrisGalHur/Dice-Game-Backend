@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +22,6 @@ import java.util.UUID;
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,7 +36,7 @@ public class Player {
     private String name;
 
     @Field(name = "registration")
-    private Date registration;
+    private LocalDateTime registration;
 
     @Field(name = "roles")
     private List<Role> roles;

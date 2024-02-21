@@ -7,7 +7,6 @@ import com.chrisgalhur.dice_game.exception.InvalidPlayerException;
 import com.chrisgalhur.dice_game.repository.PlayerRepository;
 import com.chrisgalhur.dice_game.response.GameResponse;
 import com.chrisgalhur.dice_game.util.Game;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ import java.util.ArrayList;
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Service
 public class GameServiceImpl implements GameService{
 
@@ -43,17 +41,18 @@ public class GameServiceImpl implements GameService{
      * This method is responsible for:
      * - Check the player id.
      * - Send player token to authenticate the request.
-     * - Make a dice roll.
+     * - Make a die roll.
      *
      * @param playerDTO The player DTO.
      * @return GameResponse The game response.
+     * @throws InvalidPlayerException If the player does not exist.
      */
     @Override
     public GameResponse play(PlayerDTO playerDTO) {
         try{
             Player playerPlaying = validateGame(playerDTO);
 
-            //make a dice roll
+            //make a die roll
             DataPlayer savingGame = Game.roll();
 
             //save the game
@@ -65,11 +64,22 @@ public class GameServiceImpl implements GameService{
         }
     }
 
+    /**
+     * Method to validate the game:
+     * <ul>
+     *     <li>-Check the player id.</li>
+     *     <li>-Send player token to authenticate the request.</li>
+     *     <li>-Make a dice roll.</li>
+     * </ul>
+     *
+     * @param playerDTO The player DTO.
+     * @return Player The player.
+     * @throws InvalidPlayerException If the player does not exist.
+     */
     private Player validateGame(PlayerDTO playerDTO) {
         try {
             if (playerDTO == null) {
                 throw new InvalidPlayerException("Error: The player is required.");
-                //todo: manejar error por codigos?
             }
 
             // Get the player name from the security context to find the player
@@ -78,7 +88,6 @@ public class GameServiceImpl implements GameService{
             // Check the player id.
             if (!playerRepository.existsByName(playerName)) {
                 throw new InvalidPlayerException("Error: This player does not exist.");
-                //todo: manejar error por codigos?
             } else {
                 // Get the player
                 Player playerPlaying = playerRepository.findByName(playerName).orElse(null);
@@ -91,7 +100,6 @@ public class GameServiceImpl implements GameService{
                     return playerPlaying;
                 }
                 throw new InvalidPlayerException("Error: The player does not exist.");
-                //todo: manejar error por codigos?
             }
         } catch (InvalidPlayerException e) {
             throw new InvalidPlayerException("error authenticating the player");

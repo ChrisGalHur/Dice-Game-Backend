@@ -1,6 +1,5 @@
 package com.chrisgalhur.dice_game.response;
 
-
 import lombok.Getter;
 
 /**
@@ -9,7 +8,6 @@ import lombok.Getter;
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Getter
 public class PlayerResponse{
 

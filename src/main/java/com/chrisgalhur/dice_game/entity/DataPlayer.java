@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @version 1.0
  * @author ChrisGalHur
  */
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

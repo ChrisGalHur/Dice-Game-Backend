@@ -10,7 +10,6 @@ import com.chrisgalhur.dice_game.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
@@ -23,9 +22,10 @@ import java.util.List;
 @Service
 public class PlayerServiceImpl implements PlayerService{
 
-    //region ATTRIBUTES
+    //region CONSTANTS
     private static final String PLAYER_NOT_FOUND = "Player not found";
-    //endregion ATTRIBUTES
+    private static final String PLAYER_INVALID_NAME = "Invalid player name";
+    //endregion CONSTANTS
 
     //region INJECTIONS
     private final PlayerRepository playerRepository;
@@ -47,10 +47,15 @@ public class PlayerServiceImpl implements PlayerService{
     //region UPDATE NAME
     /**
      * Method to update the player name.
-     * This method is responsible for:
-     * - Check the player and his name is not empty or null.
-     * - Check the player name is not already in use or is the same as the current name.
-     * - Update the player name using the security context.
+     * <ul>
+     *      <li>This method is responsible for:
+     *          <ul>
+     *              <li>Check the player and his name is not empty or null.</li>
+     *              <li>Check the player name is not already in use or is the same as the current name.</li>
+     *              <li>Update the player name using the security context.</li>
+     *          </ul>
+     *      </li>
+     * </ul>
      *
      * @param playerDTO The player DTO.
      * @return PlayerResponse The player response.
@@ -59,7 +64,7 @@ public class PlayerServiceImpl implements PlayerService{
     @Override
     public PlayerResponse updateName(PlayerDTO playerDTO){
             if(playerDTO == null || playerDTO.getName() == null || playerDTO.getName().isEmpty()){
-                throw new InvalidPlayerException("Invalid player name");
+                throw new InvalidPlayerException(PLAYER_INVALID_NAME);
             }
 
             if (playerRepository.existsByName(playerDTO.getName())) {
@@ -84,21 +89,22 @@ public class PlayerServiceImpl implements PlayerService{
     //region DELETE PLAYER HISTORY
     /**
      * Method to delete the player history.
-     * This method is responsible for:
-     * - Check the player id.
-     * - Send player token to authenticate the request.
-     * - Delete the player history.
+     * <ul>
+     *      <li>This method is responsible for:
+     *          <ul>
+     *               <li>Check the player id.</li>
+     *               <li>Search the player history by id.</li>
+     *               <li>Delete the player history.</li>
+     *               <li>Return the player response.</li>
+     *          </ul>
+     *      </li>
+     * </ul>
      *
-     * @param playerDTO The player DTO.
      * @return PlayerResponse The player response.
      * @throws InvalidPlayerException If the player name is empty or null.
      */
     @Override
-    public PlayerResponse deletePlayerHistory(PlayerDTO playerDTO){
-
-        if (playerDTO == null || playerDTO.getName() == null || playerDTO.getName().isEmpty()) {
-            throw new InvalidPlayerException("Invalid player name");
-        }
+    public PlayerResponse deletePlayerHistory(){
 
         String playerName = getPlayerId();
 
@@ -118,37 +124,44 @@ public class PlayerServiceImpl implements PlayerService{
     //region GET HISTORY PLAYER
     /**
      * Method to get the player history.
-     * This method is responsible for:
-     * - Check the player id.
-     * - Search the player history by id.
-     * - Return the player history.
+     * <ul>
+     *     <li>This method is responsible for:
+     *          <ul>
+     *              <li>Check the player id.</li>
+     *              <li>Search the player history by id.</li>
+     *              <li>Return the player response.</li>
+     *         </ul>
+     *      </li>
+     * </ul>
      *
-     *
+     * @return DataPlayerResponse The data player response.
+     * @throws InvalidPlayerException If the player name is empty or null.
      */
     @Override
     public DataPlayerResponse getPlayerHistory(){
         String playerName = getPlayerId();
 
         Player player = playerRepository.findByName(playerName).orElseThrow(() -> new InvalidPlayerException(PLAYER_NOT_FOUND));
-        DataPlayerResponse dataPlayer = new DataPlayerResponse("Player history", player.getDataPlayer());
 
-        if(player.getDataPlayer().isEmpty()){
-            throw new InvalidPlayerException("Player history is empty");
-        }else {
-            return dataPlayer;
-        }
+        return new DataPlayerResponse("Player history", player.getDataPlayer());
     }
     //endregion GET HISTORY PLAYER
 
     //region UTILS
     /**
      * Method to get the player ID from the security context.
-     * This method is responsible for:
-     * - Check if the player ID is in the security context.
-     * - Get the player ID from the security context.
-     * - Return the player ID.
+     * <ul>
+     *     <li>This method is responsible for:
+     *          <ul>
+     *              <li>Get the player ID from the security context.</li>
+     *              <li>Check the player ID is not empty or null to throw an exception.</li>
+     *              <li>Return the player ID.</li>
+     *          </ul>
+     *     </li>
+     * </ul>
      *
      * @return String The player ID.
+     * @throws InvalidPlayerException If the player ID is empty or null.
      */
     private String getPlayerId(){
         String id = SecurityContextHolder.getContext().getAuthentication().getName();
