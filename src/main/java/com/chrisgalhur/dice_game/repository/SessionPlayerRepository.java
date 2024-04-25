@@ -44,6 +44,6 @@ public interface SessionPlayerRepository extends MongoRepository<SessionPlayer, 
      * @param player Player to save.
      * @return Player saved.
      */
-    Optional<SessionPlayer> save(SessionPlayer player);
+    SessionPlayer save(SessionPlayer player);
     //endregion SAVE
 }

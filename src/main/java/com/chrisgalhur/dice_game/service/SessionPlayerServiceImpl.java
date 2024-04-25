@@ -80,7 +80,7 @@ public class SessionPlayerServiceImpl implements SessionPlayerService {
             playerRepository.save(player);
 
 
-            SessionPlayer playerRegistered = sessionPlayerRepository.save(sessionPlayer).orElseThrow(() -> new InvalidCredentialsException("Error: The player could not be registered."));
+            SessionPlayer playerRegistered = sessionPlayerRepository.save(sessionPlayer);
             return modelMapper.map(playerRegistered, SessionPlayerDTO.class);
         }catch (Exception e){
             throw new InvalidCredentialsException("Error: The player could not be registered.");
